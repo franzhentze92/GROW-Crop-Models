@@ -10,22 +10,22 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Apple Touch Icon (for iOS devices) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"  />
-    <link rel="apple-touch-icon" href="https://gestion.ntsgrow.com/assets/img/favicon/favicon1.png">
+    <link rel="apple-touch-icon" href="{% static 'images/NTS Logo.webp' %}">
     <!-- Apple Touch Icon for different sizes (optional for better resolution support) -->
-    <link rel="apple-touch-icon" sizes="180x180" href="https://gestion.ntsgrow.com/assets/img/favicon/favicon1.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="https://gestion.ntsgrow.com/assets/img/favicon/favicon1.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="https://gestion.ntsgrow.com/assets/img/favicon/favicon1.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="https://gestion.ntsgrow.com/assets/img/favicon/favicon1.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/NTS Logo.webp' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'images/NTS Logo.webp' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'images/NTS Logo.webp' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'images/NTS Logo.webp' %}">
+    <meta name="mobile-web-app-capable" content="yes">
     <!-- Status Bar Style (controls how the iOS status bar looks when the app is opened) -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Other options for status bar: "black" or "default" -->
     <!-- Set the name of the app as it will appear on the home screen -->
-    <meta name="apple-mobile-web-app-title" content="Triagro">
+    <meta name="apple-mobile-web-app-title" content="Leaf Analysis">
     <!-- Optional: Set the background color for the splash screen -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Web App Manifest (optional, for more customization) -->
-    <link rel="manifest" href="https://gestion.ntsgrow.com/assets/img/favicon/manifest.json"> 
+    <link rel="manifest" href="{% static 'manifest.json' %}"> 
     <!-- Optional: Set the theme color for browsers that support it (e.g., Chrome, Opera, Edge) -->
     <!-- For good practice: Set the viewport for responsive design -->
     <title>Soil Therapy Report</title>
@@ -273,8 +273,75 @@
 
       
     <script src="{% static 'js/custom.js' %}" ></script>
+    <!-- Include the tolerance system first -->
+    <script src="{% static 'js/soil-therapy-tolerance-demo.js' %}"></script>
+    
+    <!-- Original soil therapy script -->
     <script src="{% static 'js/soil-therapy.js' %}"></script>
     <script>
+        // Tolerance system configuration
+        const nutrientTolerance = new Proxy({}, {
+            get: () => ({ below: 0.5, above: 0.5 })
+        });
+
+        // Set specific tolerances for different nutrients
+        nutrientTolerance['Calcium'] = { below: 0.3, above: 0.4 }; // 30% below, 40% above
+        nutrientTolerance['Magnesium'] = { below: 0.2, above: 0.3 }; // 20% below, 30% above
+        nutrientTolerance['Potassium'] = { below: 0.4, above: 0.5 }; // 40% below, 50% above
+        nutrientTolerance['Phosphorus'] = { below: 0.25, above: 0.35 }; // 25% below, 35% above
+        nutrientTolerance['Sulfur'] = { below: 0.3, above: 0.4 }; // 30% below, 40% above
+        nutrientTolerance['Zinc'] = { below: 0.2, above: 0.3 }; // 20% below, 30% above
+        nutrientTolerance['Copper'] = { below: 0.15, above: 0.25 }; // 15% below, 25% above
+        nutrientTolerance['Manganese'] = { below: 0.25, above: 0.35 }; // 25% below, 35% above
+        nutrientTolerance['Iron'] = { below: 0.2, above: 0.3 }; // 20% below, 30% above
+        nutrientTolerance['Boron'] = { below: 0.3, above: 0.4 }; // 30% below, 40% above
+        nutrientTolerance['Molybdenum'] = { below: 0.4, above: 0.5 }; // 40% below, 50% above
+        nutrientTolerance['Selenium'] = { below: 0.3, above: 0.4 }; // 30% below, 40% above
+        nutrientTolerance['Cobalt'] = { below: 0.25, above: 0.35 }; // 25% below, 35% above
+        nutrientTolerance['Nickel'] = { below: 0.2, above: 0.3 }; // 20% below, 30% above
+        nutrientTolerance['Vanadium'] = { below: 0.3, above: 0.4 }; // 30% below, 40% above
+        nutrientTolerance['Chromium'] = { below: 0.25, above: 0.35 }; // 25% below, 35% above
+        nutrientTolerance['Aluminum'] = { below: 0.2, above: 0.3 }; // 20% below, 30% above
+        nutrientTolerance['Sodium'] = { below: 0.3, above: 0.4 }; // 30% below, 40% above
+        nutrientTolerance['Chloride'] = { below: 0.25, above: 0.35 }; // 25% below, 35% above
+        nutrientTolerance['Silicon'] = { below: 0.2, above: 0.3 }; // 20% below, 30% above
+
+        // Function to apply tolerance to className
+        function applyToleranceToClassName(originalClassName, nutrientName, value, acceptableMin, acceptableMax) {
+            const min = parseFloat(acceptableMin);
+            const max = parseFloat(acceptableMax);
+            const val = parseFloat(value);
+            
+            if (isNaN(min) || isNaN(max) || isNaN(val)) {
+                return originalClassName;
+            }
+            
+            const tol = nutrientTolerance[nutrientName];
+            const greenMin = min * (1 - tol.below);
+            const greenMax = max * (1 + tol.above);
+            
+            // Apply tolerance logic
+            if (val < greenMin) {
+                return "deficient";
+            } else if (val > greenMax) {
+                return "excessive";
+            } else {
+                return "acceptable";
+            }
+        }
+
+        // Override the original calculateProgress function
+        const originalCalculateProgress = calculateProgress;
+        calculateProgress = function(tableCategory, nutrientName, value, acceptableMin, acceptableMax, deficientThreshold, excessiveThreshold, tecValue) {
+            // Get the original result
+            const result = originalCalculateProgress(tableCategory, nutrientName, value, acceptableMin, acceptableMax, deficientThreshold, excessiveThreshold, tecValue);
+            
+            // Apply tolerance to the className
+            result.className = applyToleranceToClassName(result.className, nutrientName, value, acceptableMin, acceptableMax);
+            
+            return result;
+        };
+
         const urls = {
             generateTable: "{% url 'generate_soil_table' %}",
             generateRecommendations: "{% url 'generate_soil_recommendations' %}",

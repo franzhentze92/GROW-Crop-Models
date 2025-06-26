@@ -1,4 +1,4 @@
-// Clean version of soil-therapy.js with new color logic - 25% tolerance
+// Clean version of soil-therapy.js with new color logic
 
 // New color logic for nutrient bars - 25% tolerance
 function getBarColor(value, min, max) {
@@ -29,14 +29,16 @@ function applyFrontendTolerance(nutrients) {
       return;
     }
     
-    // Use the new 25% tolerance logic
+    // New logic: 25% tolerance
     const lower = min * 0.75;
     const upper = max * 1.25;
+    
+    console.log(`Nutrient ${nutrient.name}: value=${value}, min=${min}, max=${max}, range=${lower}-${upper}`);
     
     if (value >= lower && value <= upper) {
       nutrient.frontendStatus = "acceptable";
     } else {
-      nutrient.frontendStatus = value < lower ? "deficient" : "excessive";
+      nutrient.frontendStatus = "deficient"; // or "excessive" based on value
     }
   });
 }

@@ -260,6 +260,10 @@ def validate_token(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
         role = request.GET.get('role')
+        
+        # Set default role to 'agronomist' if no role is provided
+        if not role:
+            role = 'agronomist'
 
         if role not in ['user', 'agronomist']:
             return render(
@@ -272,11 +276,9 @@ def validate_token(view_func):
         token = request.GET.get('token')
 
         if not token:
-            return render(
-                request,
-                "unauthorized.html",
-                {"message": "Unauthorized access. Token missing."}
-            )
+            # If no token is provided, redirect to get authenticated
+            from django.shortcuts import redirect
+            return redirect(f'/api/set-cookie/?role={role}')
 
         headers = {
             'Authorization': f'Bearer {token}',

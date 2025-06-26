@@ -9,12 +9,12 @@ def index_view(request):
     role = request.GET.get('role')
     token = request.GET.get('token')
 
-    # Ensure role is valid or set to 'agronomist'
-    if role not in ['user', 'agronomist']:
+    # Set default role to 'agronomist' if no role is provided (matching the decorator)
+    if not role:
         role = 'agronomist'
 
-    # If the URL doesn't already include a valid role, redirect with the role
-    if request.GET.get('role') != role:
+    # If the URL doesn't already include the role parameter, redirect to include it
+    if 'role' not in request.GET:
         return redirect(f"{request.path}?role={role}")
 
     return render(

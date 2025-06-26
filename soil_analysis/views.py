@@ -695,3 +695,7 @@ def save_soil_analysis(request):
         return JsonResponse({'error': f'Missing key: {e}'}, status=400)
     except Exception as e:
         return JsonResponse({'error': f'Unexpected error: {str(e)}'}, status=500)
+
+def tolerance_test(request):
+    """View to serve the tolerance system test page"""
+    return render(request, 'tolerance-test.html')

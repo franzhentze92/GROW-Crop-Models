@@ -29,6 +29,8 @@ urlpatterns = [
     path('api/', include('common.urls')),
     path('analysis-submissions/', include('analysis_submissions.urls')),
     path('analysis-analytics/', include('analysis_analytics.urls')),
+]
 
-        
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# Add static files serving for development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

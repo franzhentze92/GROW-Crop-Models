@@ -11,22 +11,22 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Apple Touch Icon (for iOS devices) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"  />
-    <link rel="apple-touch-icon" href="https://gestion.ntsgrow.com/assets/img/favicon/favicon1.png">
+    <link rel="apple-touch-icon" href="{% static 'images/NTS Logo.webp' %}">
     <!-- Apple Touch Icon for different sizes (optional for better resolution support) -->
-    <link rel="apple-touch-icon" sizes="180x180" href="https://gestion.ntsgrow.com/assets/img/favicon/favicon1.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="https://gestion.ntsgrow.com/assets/img/favicon/favicon1.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="https://gestion.ntsgrow.com/assets/img/favicon/favicon1.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="https://gestion.ntsgrow.com/assets/img/favicon/favicon1.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/NTS Logo.webp' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'images/NTS Logo.webp' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'images/NTS Logo.webp' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'images/NTS Logo.webp' %}">
+    <meta name="mobile-web-app-capable" content="yes">
     <!-- Status Bar Style (controls how the iOS status bar looks when the app is opened) -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Other options for status bar: "black" or "default" -->
     <!-- Set the name of the app as it will appear on the home screen -->
-    <meta name="apple-mobile-web-app-title" content="Triagro">
+    <meta name="apple-mobile-web-app-title" content="Leaf Analysis">
     <!-- Optional: Set the background color for the splash screen -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Web App Manifest (optional, for more customization) -->
-    <link rel="manifest" href="https://gestion.ntsgrow.com/assets/img/favicon/manifest.json"> 
+    <link rel="manifest" href="{% static 'manifest.json' %}"> 
     <!-- Optional: Set the theme color for browsers that support it (e.g., Chrome, Opera, Edge) -->
     <!-- For good practice: Set the viewport for responsive design -->
     <title>Crop Nutrition Dashboard</title>
@@ -359,7 +359,7 @@
                     let bigFourNutrientsExcess = report['paddocks'][key]["recommendations"]["form_data"]["nutrient_excess"]; //.filter(nutrient => bigFourNutrients.includes(nutrient.toLowerCase()));
                     
                     // We can always display the following paragraph, as it doesn't specify certain nutrients among the big four
-                    report['paddocks'][key]["recommendations"]["explanation"] = `<span class="m-0 text-justify">We have found that it is remarkably productive to try to maintain “luxury levels” of 4 minerals on a leaf test (The Big four). “Luxury”, refers to the top end of the acceptable range. The Big Four include calcium, magnesium, phosphorus and boron.</span>`;
+                    report['paddocks'][key]["recommendations"]["explanation"] = `<span class="m-0 text-justify">We have found that it is remarkably productive to try to maintain "luxury levels" of 4 minerals on a leaf test (The Big four). "Luxury", refers to the top end of the acceptable range. The Big Four include calcium, magnesium, phosphorus and boron.</span>`;
                     
                     // Second section of the nutrient explanation
                     if (bigFourNutrientsDeficient.length > 0){
@@ -1388,8 +1388,8 @@
 
                     // First section of the nutrient explanation
                     /*
-                    ●	“We have found that it is remarkably productive to try to maintain “luxury levels” of 4 minerals 
-                    on a leaf test (The Big four). “Luxury”, refers to the top end of the acceptable range. The Big Four 
+                    ●	“We have found that it is remarkably productive to try to maintain "luxury levels" of 4 minerals 
+                    on a leaf test (The Big four). "Luxury", refers to the top end of the acceptable range. The Big Four 
                     include calcium, magnesium, phosphorus and boron.”
                     */
                     let bigFourNutrients = ['calcium', 'magnesium', 'phosphorus', 'boron']; // lowercased
@@ -1397,7 +1397,7 @@
                     let bigFourNutrientsExcess = report['paddocks'][selectedPaddock]["recommendations"]["form_data"]["nutrient_excess"]; //.filter(nutrient => bigFourNutrients.includes(nutrient.toLowerCase()));
                     
                     // We can always display the following paragraph, as it doesn't specify certain nutrients among the big four
-                    report['paddocks'][selectedPaddock]["recommendations"]["explanation"] = `<span class="m-0 text-justify">We have found that it is remarkably productive to try to maintain “luxury levels” of 4 minerals on a leaf test (The Big four). “Luxury”, refers to the top end of the acceptable range. The Big Four include calcium, magnesium, phosphorus and boron.</span>`;
+                    report['paddocks'][selectedPaddock]["recommendations"]["explanation"] = `<span class="m-0 text-justify">We have found that it is remarkably productive to try to maintain "luxury levels" of 4 minerals on a leaf test (The Big four). "Luxury", refers to the top end of the acceptable range. The Big Four include calcium, magnesium, phosphorus and boron.</span>`;
                     
                     // Second section of the nutrient explanation
                     if (bigFourNutrientsDeficient.length > 0){
